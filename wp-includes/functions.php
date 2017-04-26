@@ -5637,3 +5637,61 @@ function wp_cache_get_last_changed( $group ) {
 
 	return $last_changed;
 }
+
+function add_new_taxonomies() {	
+/* создаем функцию с произвольным именем и вставляем 
+в неё register_taxonomy() */	
+	register_taxonomy('categoria',
+		array('post'),
+		array(
+			'hierarchical' => false,
+			/* true - по типу рубрик, false - по типу меток, 
+			по умолчанию - false */
+			'labels' => array(
+				/* ярлыки, нужные при создании UI, можете
+				не писать ничего, тогда будут использованы
+				ярлыки по умолчанию */
+				'name' => 'Категория читателя',
+				'singular_name' => 'Категория',
+				'search_items' =>  'Найти категорию',
+				'popular_items' => 'Популярные категория',
+				'all_items' => 'Все категории',
+				'parent_item' => null,
+				'parent_item_colon' => null,
+				'edit_item' => 'Редактировать категорию', 
+				'update_item' => 'Обновить категорию',
+				'add_new_item' => 'Добавить новую категорию',
+				'new_item_name' => 'Название новой категории',
+				'separate_items_with_commas' => 'Разделяйте категории запятыми',
+				'add_or_remove_items' => 'Добавить или удалить категорию',
+				'choose_from_most_used' => null,
+				'menu_name' => 'Категория'
+			),
+			'public' => true, 
+			/* каждый может использовать таксономию, либо
+			только администраторы, по умолчанию - true */
+			'show_in_nav_menus' => true,
+			/* добавить на страницу создания меню */
+			'show_ui' => true,
+			/* добавить интерфейс создания и редактирования */
+			'show_tagcloud' => true,
+			/* нужно ли разрешить облако тегов для этой таксономии */
+			'update_count_callback' => '_update_post_term_count',
+			/* callback-функция для обновления счетчика $object_type */
+			'query_var' => true,
+			/* разрешено ли использование query_var, также можно 
+			указать строку, которая будет использоваться в качестве 
+			него, по умолчанию - имя таксономии */
+			'rewrite' => array(
+			/* настройки URL пермалинков */
+				'slug' => 'categoria', // ярлык
+				'hierarchical' => false // разрешить вложенность
+ 
+			),
+		)
+	);
+}
+add_action( 'init', 'add_new_taxonomies', 0 );
+
+
+
